@@ -1,0 +1,13 @@
+GSSUP_java = \
+	org/omg/GSSUP/ErrorCodeHelper.java \
+	org/omg/GSSUP/ErrorTokenHelper.java \
+	org/omg/GSSUP/ErrorTokenHolder.java \
+	org/omg/GSSUP/ErrorToken.java \
+	org/omg/GSSUP/GSSUPMechOID.java \
+	org/omg/GSSUP/GSS_UP_S_G_BAD_PASSWORD.java \
+	org/omg/GSSUP/GSS_UP_S_G_BAD_TARGET.java \
+	org/omg/GSSUP/GSS_UP_S_G_NOUSER.java \
+	org/omg/GSSUP/GSS_UP_S_G_UNSPECIFIED.java \
+	org/omg/GSSUP/InitialContextTokenHelper.java \
+	org/omg/GSSUP/InitialContextTokenHolder.java \
+	org/omg/GSSUP/InitialContextToken.java

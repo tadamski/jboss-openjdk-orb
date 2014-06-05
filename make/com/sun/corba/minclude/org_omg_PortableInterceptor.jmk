@@ -141,17 +141,6 @@ PI_GENERATED_HELP_HOL_java = \
 	org/omg/PortableInterceptor/TaggedComponentSeqHolder.java \
 	org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHolder.java \
 	org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidNameHolder.java \
-	org/omg/IOP/CodecPackage/FormatMismatchHolder.java \
-	org/omg/IOP/CodecPackage/InvalidTypeForEncodingHolder.java \
-	org/omg/IOP/CodecPackage/TypeMismatchHolder.java \
-	org/omg/IOP/CodecHelper.java \
-	org/omg/IOP/EncodingFormatHelper.java \
-	org/omg/IOP/EncodingHelper.java \
-	org/omg/IOP/CodecFactoryPackage/UnknownEncodingHolder.java \
-	org/omg/IOP/CodecFactoryHolder.java \
-	org/omg/IOP/CodecHolder.java \
-	org/omg/IOP/EncodingHolder.java \
-	org/omg/IOP/TaggedComponentSeqHelper.java \
 	org/omg/Dynamic/ContextListHelper.java \
 	org/omg/Dynamic/ExceptionListHelper.java \
 	org/omg/Dynamic/ParameterHolder.java \

@@ -33,7 +33,6 @@ POA_GENERATED_java = \
 	org/omg/PortableServer/AdapterActivator.java \
 	org/omg/PortableServer/AdapterActivatorOperations.java \
 	org/omg/PortableServer/Current.java \
-	org/omg/PortableServer/CurrentHelper.java \
 	org/omg/PortableServer/CurrentOperations.java \
 	org/omg/PortableServer/CurrentPackage/NoContext.java \
 	org/omg/PortableServer/CurrentPackage/NoContextHelper.java \
@@ -56,7 +55,6 @@ POA_GENERATED_java = \
 	org/omg/PortableServer/LifespanPolicyOperations.java \
 	org/omg/PortableServer/LifespanPolicyValue.java \
 	org/omg/PortableServer/POA.java \
-	org/omg/PortableServer/POAHelper.java \
 	org/omg/PortableServer/POAOperations.java \
 	org/omg/PortableServer/POAManager.java \
 	org/omg/PortableServer/POAManagerOperations.java \

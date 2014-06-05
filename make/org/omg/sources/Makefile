@@ -34,6 +34,8 @@ include $(BUILDDIR)/common/Defs.gmk
 # Files
 #
 CORBA_JMK_DIRECTORY=$(TOPDIR)/make/com/sun/corba/minclude/
+include $(CORBA_JMK_DIRECTORY)org_omg_IR.jmk
+
 include $(CORBA_JMK_DIRECTORY)org_omg_PortableServer.jmk
 include $(CORBA_JMK_DIRECTORY)org_omg_DynamicAny.jmk
 include $(CORBA_JMK_DIRECTORY)org_omg_CosNaming.jmk
@@ -41,6 +43,12 @@ include $(CORBA_JMK_DIRECTORY)org_omg_IOP.jmk
 include $(CORBA_JMK_DIRECTORY)org_omg_Messaging.jmk
 include $(CORBA_JMK_DIRECTORY)org_omg_CORBAX.jmk
 include $(CORBA_JMK_DIRECTORY)org_omg_PortableInterceptor.jmk
+
+include $(CORBA_JMK_DIRECTORY)org_omg_CSI.jmk
+include $(CORBA_JMK_DIRECTORY)org_omg_CSIIOP.jmk
+include $(CORBA_JMK_DIRECTORY)org_omg_GSSUP.jmk
+include $(CORBA_JMK_DIRECTORY)org_omg_Security.jmk
+include $(CORBA_JMK_DIRECTORY)org_omg_SSLIOP.jmk
 
 ifdef STANDALONE_CORBA_WS
 include $(CORBA_JMK_DIRECTORY)org_omg_CosTransactions.jmk
@@ -51,11 +59,11 @@ endif
 #
 
 ifdef STANDALONE_CORBA_WS
-build: poa.compile iop.compile corbax.compile messaging.compile pi.compile dynany.compile ns.compile tr.compile
-clean clobber:: pi.clean iop.clean corbax.clean messaging.clean poa.clean dynany.clean ns.clean tr.clean
+build: ir.compile poa.compile iop.compile corbax.compile messaging.compile pi.compile dynany.compile ns.compile tr.compile csi.compile csiiop.compile gssup.compile security.compile cssliop.compile
+clean clobber:: ir.clean pi.clean iop.clean corbax.clean messaging.clean poa.clean dynany.clean ns.clean tr.clean csi.clean csiiop.clean gssup.clean security.clean ssliop.clean
 else
-build: poa.compile iop.compile corbax.compile messaging.compile pi.compile ns.compile dynany.compile
-clean clobber:: iop.clean corbax.clean messaging.clean pi.clean poa.clean ns.clean dynany.clean
+build: ir.compile poa.compile iop.compile corbax.compile messaging.compile pi.compile ns.compile dynany.compile csi.compile csiiop.compile gssup.compile security.compile ssliop.compile
+clean clobber:: ir.clean iop.clean corbax.clean messaging.clean pi.clean poa.clean ns.clean dynany.clean csi.clean csiiop.clean gssup.compile security.clean ssliop.clean
 endif
 
 
@@ -68,17 +76,24 @@ CORBA_IDL_DIR = $(SRC_DIR)/org/omg/PortableServer
 
 # IDL Files
 
+IR.IDL = $(SRC_DIR)/org/omg/CORBA/ir.idl
+
 POA.IDL = $(SRC_DIR)/org/omg/PortableServer/poa.idl
 DYNAMIC_ANY.IDL = $(SRC_DIR)/org/omg/DynamicAny/DynamicAny.idl
 COSTRANSACTIONS.IDL = $(SRC_DIR)/org/omg/CosTransactions/CosTransactions.idl
 COSTSINTEROP.IDL = $(SRC_DIR)/org/omg/CosTransactions/CosTSInteroperation.idl
 NAMESERVICE.IDL = $(SRC_DIR)/org/omg/CosNaming/nameservice.idl
 # The following 4 files are for Portable Interceptors
-IOP.IDL = $(SRC_DIR)/org/omg/PortableInterceptor/IOP.idl
+IOP.IDL = $(SRC_DIR)/org/omg/IOP/IOP.idl
 CORBAX.IDL = $(SRC_DIR)/org/omg/PortableInterceptor/CORBAX.idl
 MESSAGING.IDL = $(SRC_DIR)/org/omg/PortableInterceptor/Messaging.idl
 INTERCEPTORS.IDL = $(SRC_DIR)/org/omg/PortableInterceptor/Interceptors.idl
 
+CSI.IDL = $(SRC_DIR)/org/omg/CSI/CSI.idl
+GSSUP.IDL = $(SRC_DIR)/org/omg/GSSUP/GSSUP.idl
+CSIIOP.IDL = $(SRC_DIR)/org/omg/CSIIOP/CSIIOP.idl
+SECURITY.IDL = $(SRC_DIR)/org/omg/Security/Security.idl
+SSLIOP.IDL = $(SRC_DIR)/org/omg/SSLIOP/SSLIOP.idl
 # IDL Directories
 
 POAFILEDIR = $(GENSRCDIR)/org/omg/PortableServer
@@ -86,6 +101,23 @@ POASRCDIR = $(SRC_DIR)/org/omg/PortableServer
 DYNANY_DIR = $(GENSRCDIR)/org/omg/DynamicAny
 NAMESERVICEDIR = $(GENSRCDIR)/org/omg/CosNaming
 INTERCEPTORSDIR = $(GENSRCDIR)/org/omg/PortableInterceptor
+
+CSIDIR = $(GENSRCDIR)/org/omg/CSI
+
+# IR Files and Rules
+#
+IRGENERATEDFILES = $(IR_java:%=$(GENSRCDIR)/%)
+IRDUPLICATEDFILES = $(IR_duplicated_java:%=$(GENSRCDIR)/%)
+
+$(IRGENERATEDFILES):: $(IR.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/CORBA" -corba 3.0 -fallTie -pkgPrefix CORBA org.omg $(IR.IDL)
+	$(RM) $(IRDUPLICATEDFILES)
+
+ir.compile: $(IRGENERATEDFILES)
+
+ir.clean: 
+	$(RM) -r $(IRFILEDIR)
+
 
 # POA files and Rules
 
@@ -156,8 +188,7 @@ IOPGENERATEDFILES = $(IOP_java:%=$(GENSRCDIR)/%)
 IOPDELETEFILES =    $(IOP_TO_DELETE_FILES:%=$(GENSRCDIR)/%)
 
 $(IOPGENERATEDFILES):: $(IOP.IDL)
-	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/PortableInterceptor" -i $(CORBA_IDL_DIR) -fall -corba 3.0 -D CORBA3 -pkgPrefix IOP org.omg $(IOP.IDL)
-	$(RM) -r $(IOPDELETEFILES)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/CORBA" -fall -corba 3.0 -D CORBA3 -pkgPrefix IOP org.omg $(IOP.IDL)
 
 iop.compile: $(IOPGENERATEDFILES)
 
@@ -177,6 +208,7 @@ corbax.compile: $(CORBAXGENERATEDFILES)
 corbax.clean: 
 	$(RM) $(CORBAXGENERATEDFILES)
 
+
 #Messaging compile 
 MESSAGINGGENERATEDFILES = $(Messaging_java:%=$(GENSRCDIR)/%)
 
@@ -188,14 +220,69 @@ messaging.compile: $(MESSAGINGGENERATEDFILES)
 messaging.clean: 
 	$(RM) $(MESSAGINGGENERATEDFILES)
 
+#CSI compile 
+CSIGENERATEDFILES = $(CSI_java:%=$(GENSRCDIR)/%)
 
+$(CSIGENERATEDFILES):: $(CSI.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -fall -corba 3.0 -pkgPrefix CSI org.omg $(CSI.IDL)
+
+csi.compile: $(CSIGENERATEDFILES)
+
+csi.clean:
+	$(RM) $(CSIGENERATEDFILES)
+
+#CSIIOP compile 
+CSIIOPGENERATEDFILES = $(CSIIOP_java:%=$(GENSRCDIR)/%)
+
+$(CSIIOPGENERATEDFILES):: $(CSIIOP.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/CORBA" -i "$(SRC_DIR)/org/omg/CSI" -i "$(SRC_DIR)/org/omg/IOP" -fall -corba 3.0 -pkgPrefix IOP org.omg -pkgPrefix CSI org.omg -pkgPrefix CSIIOP org.omg $(CSIIOP.IDL)
+
+csiiop.compile: $(CSIIOPGENERATEDFILES)
+
+csiiop.clean:
+	$(RM) $(CSIIOPGENERATEDFILES)
+
+
+#GSSUP compile 
+GSSUPGENERATEDFILES = $(GSSUP_java:%=$(GENSRCDIR)/%)
+
+$(GSSUPGENERATEDFILES):: $(GSSUP.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/CSI" -fall -corba 3.0 -pkgPrefix CSI org.omg -pkgPrefix GSSUP org.omg $(GSSUP.IDL)
+
+gssup.compile: $(GSSUPGENERATEDFILES)
+
+gssup.clean:
+	$(RM) $(GSSUPGENERATEDFILES)
+
+#SECURITY compile 
+SECURITYGENERATEDFILES = $(SECURITY_java:%=$(GENSRCDIR)/%)
+
+$(SECURITYGENERATEDFILES):: $(SECURITY.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/Security" -fall -corba 3.0 -pkgPrefix TimeBase org.omg -pkgPrefix Security org.omg $(SECURITY.IDL)
+
+security.compile: $(SECURITYGENERATEDFILES)
+
+security.clean:
+	$(RM) $(SECURITYGENERATEDFILES)
+
+
+#SSLIOP compile 
+SSLIOPGENERATEDFILES = $(SSLIOP_java:%=$(GENSRCDIR)/%)
+
+$(SSLIOPGENERATEDFILES):: $(GSSUP.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/CORBA" -i "$(SRC_DIR)/org/omg/IOP" -i "$(SRC_DIR)/org/omg/Security"  -i "$(SRC_DIR)/org/omg/SSLIOP" -fall -corba 3.0 -pkgPrefix Security org.omg -pkgPrefix SSLIOP org.omg $(SSLIOP.IDL)
+
+ssliop.compile: $(SSLIOPGENERATEDFILES)
+
+ssliop.clean:
+	$(RM) $(SSLIOPGENERATEDFILES)
 
 #PortableInterceptor Files
 PIGENERATEDFILES = $(PI_GENERATED_java:%=$(GENSRCDIR)/%)
 PIHELHOLFILES = $(PI_GENERATED_HELP_HOL_java:%=$(GENSRCDIR)/%)
 
 $(PIGENERATEDFILES):: $(INTERCEPTORS.IDL)
-	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/PortableInterceptor" -i $(CORBA_IDL_DIR) -fall -pkgPrefix PortableInterceptor org.omg -pkgPrefix Dynamic org.omg -pkgPrefix IOP org.omg -corba 3.0 -D CORBA3 $(INTERCEPTORS.IDL)
+	$(IDLJ) -td "$(GENSRCDIR)" -i "$(SRC_DIR)/org/omg/CORBA"  -i "$(SRC_DIR)/org/omg/IOP" -i "$(SRC_DIR)/org/omg/PortableInterceptor" -i $(CORBA_IDL_DIR) -fall -pkgPrefix PortableInterceptor org.omg -pkgPrefix Dynamic org.omg -pkgPrefix IOP org.omg -corba 3.0 -D CORBA3 $(INTERCEPTORS.IDL)
 	$(RM) $(PIHELHOLFILES)
 
 pi.compile: $(PIGENERATEDFILES)
@@ -205,9 +292,9 @@ pi.clean:
 
 
 ifdef STANDALONE_CORBA_WS
-.PHONY : poa.compile poa.clean iop.compile iop.clean messaging.compile messaging.clean corbax.compile corbax.clean pi.compile pi.clean dynany.clean dynany.compile ns.compile ns.clean tr.compile tr.clean
+.PHONY : ir.compile ir.clean poa.compile poa.clean iop.compile iop.clean messaging.compile messaging.clean corbax.compile corbax.clean pi.compile pi.clean dynany.clean dynany.compile ns.compile ns.clean tr.compile tr.clean csi.compile csi.clean csiiop.compile csiiop.clean gssup.compile gssup.clean security.compile security.clean ssliop.compile ssliop.clean
 else
-.PHONY : poa.compile poa.clean iop.compile iop.clean messaging.compile messaging.clean corbax.compile corbax.clean pi.compile pi.clean ns.compile ns.clean dynany.clean dynany.compile
+.PHONY : ir.compile ir.clean poa.compile poa.clean iop.compile iop.clean messaging.compile messaging.clean corbax.compile corbax.clean pi.compile pi.clean ns.compile ns.clean dynany.clean dynany.compile csi.compile csi.clean csiiop.compile csiiop.clean gssup.compile gssup.clean security.compile security.clean ssliop.compile ssliop.clean
 endif
 
 include $(BUILDDIR)/common/Rules.gmk

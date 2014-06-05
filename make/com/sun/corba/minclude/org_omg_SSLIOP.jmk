@@ -1,0 +1,5 @@
+SSLIOP_java = \
+	org/omg/SSLIOP/SSLHelper.java \
+	org/omg/SSLIOP/SSLHolder.java \
+	org/omg/SSLIOP/SSL.java \
+	org/omg/SSLIOP/TAG_SSL_SEC_TRANS.java

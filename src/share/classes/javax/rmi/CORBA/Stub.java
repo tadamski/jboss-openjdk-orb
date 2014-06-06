@@ -32,19 +32,16 @@
 
 package javax.rmi.CORBA;
 
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.INITIALIZE;
-import org.omg.CORBA_2_3.portable.ObjectImpl;
-
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.MalformedURLException ;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Properties;
 import java.rmi.server.RMIClassLoader;
+import java.security.AccessController;
+import java.util.Properties;
+
+import org.omg.CORBA.INITIALIZE;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA_2_3.portable.ObjectImpl;
 
 import com.sun.corba.se.impl.orbutil.GetPropertyAction;
 
@@ -59,12 +56,11 @@ public abstract class Stub extends ObjectImpl
 
     // This can only be set at object construction time (no sync necessary).
     private transient StubDelegate stubDelegate = null;
-    private static Class stubDelegateClass = null;
+    private static Class<?> stubDelegateClass = null;
     private static final String StubClassKey = "javax.rmi.CORBA.StubClass";
-    private static final String defaultStubImplName = "com.sun.corba.se.impl.javax.rmi.CORBA.StubDelegateImpl";
 
     static {
-        Object stubDelegateInstance = (Object) createDelegateIfSpecified(StubClassKey, defaultStubImplName);
+        Object stubDelegateInstance = (Object) createDelegateIfSpecified(StubClassKey);
         if (stubDelegateInstance != null)
             stubDelegateClass = stubDelegateInstance.getClass();
 
@@ -207,7 +203,7 @@ public abstract class Stub extends ObjectImpl
     // are in different packages and the visibility needs to be package for
     // security reasons. If you know a better solution how to share this code
     // then remove it from PortableRemoteObject. Also in Util.java
-    private static Object createDelegateIfSpecified(String classKey, String defaultClassName) {
+    private static Object createDelegateIfSpecified(String classKey) {
         String className = (String)
             AccessController.doPrivileged(new GetPropertyAction(classKey));
         if (className == null) {
@@ -218,7 +214,7 @@ public abstract class Stub extends ObjectImpl
         }
 
         if (className == null) {
-            className = defaultClassName;
+            return new com.sun.corba.se.impl.javax.rmi.CORBA.StubDelegateImpl();
         }
 
         try {
@@ -235,17 +231,16 @@ public abstract class Stub extends ObjectImpl
 
     }
 
-    private static Class loadDelegateClass( String className )  throws ClassNotFoundException
+    private static Class<?> loadDelegateClass( String className )  throws ClassNotFoundException
     {
         try {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            return Class.forName(className, false, loader);
+            return Class.forName(className, false, Stub.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             // ignore, then try RMIClassLoader
         }
 
         try {
-            return RMIClassLoader.loadClass(className);
+            return RMIClassLoader.loadClass((String) null, className);
         } catch (MalformedURLException e) {
             String msg = "Could not load " + className + ": " + e.toString();
             ClassNotFoundException exc = new ClassNotFoundException( msg ) ;

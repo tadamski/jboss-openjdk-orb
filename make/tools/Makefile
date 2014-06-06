@@ -35,7 +35,7 @@ SUBDIRS =                   \
   idlj                      \
   logutil		    \
 
-all build clean clobber::
+all gensrc build clean clobber::
 	$(SUBDIRS-loop)
 
 clean clobber::

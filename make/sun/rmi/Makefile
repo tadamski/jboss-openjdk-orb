@@ -39,7 +39,7 @@ LOGSTRINGS_PROPERTIES     = LogStrings.properties
 # references in com/sun/corba/se/impl/io and util classes which in turn will
 # be built from rmic Makefile.
 #
-CORBALOG_SUBDIRS = corbalogsources corbalogcompile rmic
+CORBALOG_SUBDIRS = corbalogsources corbalogcompile
 
 # Do these subdirs first
 OTHERSUBDIRS=$(CORBALOG_SUBDIRS)
@@ -52,6 +52,11 @@ $(LOG_CLASS_OUTPUTDIRECTORY)/$(LOGSTRINGS_PROPERTIES):  $(LOG_GENDIRECTORY)/$(LO
 # Then do the rest
 all build clean clobber :: $(LOG_CLASS_OUTPUTDIRECTORY)/$(LOGSTRINGS_PROPERTIES)
 	$(SUBDIRS-loop)
+
+GENSRCDIRS = corbalogsources
+
+gensrc::
+	$(GENSRCDIRS-loop)
 
 clean::
 	$(RM) -r $(CLASSBINDIR)/sun/rmi $(CLASSBINDIR)/com/sun/rmi

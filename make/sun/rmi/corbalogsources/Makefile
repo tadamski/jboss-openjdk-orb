@@ -1,4 +1,4 @@
-#
+#/
 # Copyright (c) 2003, 2009, Oracle and/or its affiliates. All rights reserved.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 #
@@ -33,7 +33,7 @@ include $(BUILDDIR)/common/Defs.gmk
 #
 # Rules
 #
-build: logwrapper.generate logresource.generate activation.idl.compile portableactivation.idl.compile 
+build gensrc: logwrapper.generate logresource.generate activation.idl.compile portableactivation.idl.compile 
 
 clean clobber:: activation.idl.clean portableactivation.idl.clean
 

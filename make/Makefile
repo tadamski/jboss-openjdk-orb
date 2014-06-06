@@ -53,7 +53,7 @@ ifdef ALT_OUTPUTDIR
   DIST_DIR = $(ALT_OUTPUTDIR)/dist
 else
   OUTPUTDIR = ..
-  BUILD_DIR = $(TOPDIR)/build/$(PLATFORM)-$(ARCH)
+  BUILD_DIR = $(TOPDIR)/build
   DIST_DIR = $(TOPDIR)/dist
 endif
 ABS_OUTPUTDIR = $(call FullPath,$(OUTPUTDIR))
@@ -150,7 +150,7 @@ $(SRC_ZIP): $(SRC_ZIP_FILES)
 
 #----- bin.zip
 
-BIN_ZIP_FILES = $(BUILD_DIR/lib/orb.idl $(BUILD_DIR)/lib/ir.idl
+BIN_ZIP_FILES = $(BUILD_DIR)/lib/orb.idl $(BUILD_DIR)/lib/ir.idl
 
 BIN_ZIP = $(LIB_DIR)/bin.zip
 $(BIN_ZIP): $(BIN_ZIP_FILES)
@@ -160,12 +160,22 @@ $(BIN_ZIP): $(BIN_ZIP_FILES)
 #
 # CORBA
 #
+
 SUBDIRS = tools javax org sun com
 
 build:
 	$(SUBDIRS-loop)
 
 all : build $(CLASSES_JAR) $(SRC_ZIP) $(BIN_ZIP)
+
+GENSRCDIRS = tools org sun
+
+gensrc:
+	$(GENSRCDIRS-loop)
+	$(RM) -rf $(BUILD_DIR)/btclasses
+	$(RM) -rf $(BUILD_DIR)/btjars
+	$(RM) -rf $(BUILD_DIR)/tmp
+
 
 clean clobber:
 	$(RM) -r $(BUILD_DIR)
@@ -190,4 +200,4 @@ jprt_build_product jprt_build_debug jprt_build_fastdebug: all
 #
 # Phonies to avoid accidents.
 #
-.PHONY: all build clean clobber debug jprt_build_product jprt_build_debug jprt_build_fastdebug
+.PHONY: all build gensrc clean clobber debug jprt_build_product jprt_build_debug jprt_build_fastdebug

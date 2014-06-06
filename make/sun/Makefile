@@ -38,3 +38,7 @@ SUBDIRS = corba rmi
 
 all build clean clobber::
 	$(SUBDIRS-loop)
+GENSRCDIRS = rmi
+
+gensrc::
+	$(GENSRCDIRS-loop)

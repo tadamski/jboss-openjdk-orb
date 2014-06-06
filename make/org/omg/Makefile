@@ -41,3 +41,7 @@ endif
 all build clean clobber::
 	$(SUBDIRS-loop)
 
+GENSRCDIRS = sources
+
+gensrc::
+	$(GENSRCDIRS-loop)

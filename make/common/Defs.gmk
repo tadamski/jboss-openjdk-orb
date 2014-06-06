@@ -51,7 +51,7 @@ ifndef SHARE_SRC
   SHARE_SRC    = $(TOPDIR)/src/share
 endif
 
-_OUTPUTDIR=$(TOPDIR)/build/$(PLATFORM)-$(ARCH)
+_OUTPUTDIR=$(TOPDIR)/build
 
 ifneq ($(PLATFORM), windows)
   ifdef ALT_X11_PATH
@@ -267,7 +267,24 @@ define OTHERSUBDIRS-loop
 done
 endef
 
-# Prevent the use of many default suffix rules we do not need
+# Loop ony GENSRCDIRS directories need for code generation
+# using standard SUBDIRS flags
+#   SUBDIRS_MAKEFLAGS      Make settings for a subdir make
+#   SUBDIRS_MAKEFLAGS-$@   Make settings specific to this target
+define GENSRCDIRS-loop
+@for i in DUMMY $(GENSRCDIRS) ; do \
+  if [ "$$i" != "DUMMY" ] ; then \
+    $(MAKE) -C $${i} $@ \
+          $(SUBDIRS_MAKEFLAGS) \
+          $(SUBDIRS_MAKEFLAGS-$@) \
+          FULL_VERSION=$(FULL_VERSION) \
+          RELEASE=$(RELEASE) || exit 1; \
+  fi ; \
+done
+endef
+
+
+#Prevent the use of many default suffix rules we do not need
 .SUFFIXES:
 .SUFFIXES: .java .class
 

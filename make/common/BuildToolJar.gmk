@@ -40,7 +40,7 @@ BUILDTOOL_WC_PATTERNS      = $(BUILDTOOL_SOURCE_ROOT)/$(PKGDIR)/*.java \
 # Wildcard expansion that finds all the files
 BUILDTOOL_SRC_FILES       := $(wildcard $(BUILDTOOL_WC_PATTERNS))
 
-all build: $(BUILDTOOL_JAR_FILE)
+all build gensrc: $(BUILDTOOL_JAR_FILE)
 
 $(BUILDTOOL_MANIFEST_FILE): $(BUILDTOOL_MAIN_SOURCE_FILE)
 	@$(prep-target)

@@ -59,10 +59,10 @@ endif
 #
 
 ifdef STANDALONE_CORBA_WS
-build: ir.compile poa.compile iop.compile corbax.compile messaging.compile pi.compile dynany.compile ns.compile tr.compile csi.compile csiiop.compile gssup.compile security.compile cssliop.compile
+build gensrc: ir.compile poa.compile iop.compile corbax.compile messaging.compile pi.compile dynany.compile ns.compile tr.compile csi.compile csiiop.compile gssup.compile security.compile cssliop.compile
 clean clobber:: ir.clean pi.clean iop.clean corbax.clean messaging.clean poa.clean dynany.clean ns.clean tr.clean csi.clean csiiop.clean gssup.clean security.clean ssliop.clean
 else
-build: ir.compile poa.compile iop.compile corbax.compile messaging.compile pi.compile ns.compile dynany.compile csi.compile csiiop.compile gssup.compile security.compile ssliop.compile
+build gensrc: ir.compile poa.compile iop.compile corbax.compile messaging.compile pi.compile ns.compile dynany.compile csi.compile csiiop.compile gssup.compile security.compile ssliop.compile
 clean clobber:: ir.clean iop.clean corbax.clean messaging.clean pi.clean poa.clean ns.clean dynany.clean csi.clean csiiop.clean gssup.compile security.clean ssliop.clean
 endif
 

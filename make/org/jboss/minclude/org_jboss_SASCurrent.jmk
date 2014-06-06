@@ -1,0 +1,5 @@
+SASCurrent_java = \
+	org/jboss/iiop/csiv2/SASCurrentHelper.java \
+	org/jboss/iiop/csiv2/SASCurrentHolder.java \
+	org/jboss/iiop/csiv2/SASCurrent.java \
+	org/jboss/iiop/csiv2/SASCurrentOperations.java

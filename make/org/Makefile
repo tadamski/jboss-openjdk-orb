@@ -32,15 +32,15 @@ PRODUCT = org
 include $(BUILDDIR)/common/Defs.gmk
 
 ifdef STANDALONE_CORBA_WS
-SUBDIRS = omg se
+SUBDIRS = omg jboss se
 else
-SUBDIRS = omg
+SUBDIRS = omg jboss
 endif
 
 all build clean clobber::
 	$(SUBDIRS-loop)
 
-GENSRCDIRS = omg
+GENSRCDIRS = omg jboss
 
 gensrc::
 	$(GENSRCDIRS-loop)

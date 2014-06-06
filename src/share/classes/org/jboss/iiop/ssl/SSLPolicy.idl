@@ -1,0 +1,24 @@
+#include <orb.idl>
+
+module org {
+	module jboss {
+		module iiop {
+			module ssl {
+
+				const CORBA::PolicyType SSL_POLICY_TYPE = 101;
+
+				enum SSLPolicyValue
+				{
+					SSL_NOT_REQUIRED,
+					SSL_REQUIRED
+				};
+
+				local interface SSLPolicy : CORBA::Policy 
+				{
+					readonly attribute SSLPolicyValue value;
+				};
+
+			};
+		};
+	};
+};

@@ -1,0 +1,9 @@
+SSLPolicy_java = \
+	org/jboss/iiop/ssl/SSLPolicyHelper.java \
+	org/jboss/iiop/ssl/SSLPolicyHolder.java \
+	org/jboss/iiop/ssl/SSLPolicy.java \
+	org/jboss/iiop/ssl/SSLPolicyOperations.java \
+	org/jboss/iiop/ssl/SSL_POLICY_TYPE.java \
+	org/jboss/iiop/ssl/SSLPolicyValueHelper.java \
+	org/jboss/iiop/ssl/SSLPolicyValueHolder.java \
+	org/jboss/iiop/ssl/SSLPolicyValue.java

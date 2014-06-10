@@ -58,7 +58,7 @@ public class ORBDataParserImpl extends ParserImplTableBase implements ORBData
     private ORB orb ;
     private ORBUtilSystemException wrapper ;
     private String ORBInitialHost ;
-    private int ORBInitialPort ;
+    private Integer ORBInitialPort ;
     private String ORBServerHost ;
     private int ORBServerPort ;
     private String listenOnAllInterfaces;
@@ -120,7 +120,7 @@ public class ORBDataParserImpl extends ParserImplTableBase implements ORBData
         return ORBInitialHost;
     }
 
-    public int getORBInitialPort()
+    public Integer getORBInitialPort()
     {
         return ORBInitialPort;
     }
